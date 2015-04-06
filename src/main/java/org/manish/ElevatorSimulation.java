@@ -7,8 +7,12 @@ public class ElevatorSimulation {
     private final Random random;
 
     public static void main(String[] args) {
-        ElevatorSimulation elevatorSimulation = new ElevatorSimulation(10, 2);
-        elevatorSimulation.simulate(10);
+
+        int numFloors = getValue(args, 0, 10);
+        int numElevators = getValue(args, 1, 2);
+        int numTicks = getValue(args, 2, 10);
+        ElevatorSimulation elevatorSimulation = new ElevatorSimulation(numFloors, numElevators);
+        elevatorSimulation.simulate(numTicks);
 
     }
 
@@ -37,6 +41,14 @@ public class ElevatorSimulation {
             controller.step();
 
             System.out.println(controller);
+        }
+    }
+
+    private static int getValue(String[] args, int idx, int defaultValue) {
+        if (args.length > idx) {
+            return Integer.parseInt(args[idx]);
+        } else {
+            return defaultValue;
         }
     }
 }
