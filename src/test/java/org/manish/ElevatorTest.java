@@ -56,6 +56,35 @@ public class ElevatorTest {
         assertThat(elevator.getDirection(), nullValue());
     }
 
+    @Test
+    public void testUpdateDestinationWithMultipleDestinations() {
+        elevator.addDestination(new Request(7, Direction.Down));
+        nStep(elevator, 1);
+
+        elevator.addDestination(new Request(5, Direction.Up));
+        nStep(elevator, 4);
+
+        assertThat(elevator.getDestinations(), is(Arrays.asList(7)));
+        assertThat(elevator.getDirection(), is(Direction.Up));
+    }
+
+    @Test
+    public void testDestinationIsChanged() {
+        elevator.addDestination(new Request(5, Direction.Down));
+        nStep(elevator, 3);
+
+        elevator.addDestination(new Request(2, Direction.Up));
+        nStep(elevator, 1);
+
+        assertThat(elevator.getDestinations(), is(Arrays.asList(5, 2)));
+        assertThat(elevator.getDirection(), is(Direction.Up));
+
+        nStep(elevator, 1);
+        assertThat(elevator.getDestinations(), is(Arrays.asList(2)));
+        assertThat(elevator.getDirection(), is(Direction.Down));
+
+    }
+
     static void nStep(Elevator e, int n) {
         for (int i = 0; i < n; i++) {
             e.step();
