@@ -9,6 +9,9 @@ public class ElevatorController {
 
     private List<Elevator> elevators = new ArrayList<Elevator>();
 
+    // TODO: find a better way to inject the strategy.
+    private ElevatorSchedulingStrategy scheduler = new NearestCarStrategy();
+
     public ElevatorController(int numFloors, int numElevators) {
         this.numFloors = numFloors;
         elevators = new ArrayList<Elevator>(numElevators);
@@ -45,18 +48,9 @@ public class ElevatorController {
      * @return if of the elevator
      */
     public int pickUp(int floor, Direction direction) {
-        Elevator bestElevator = null;
-        int bestScore = -1;
-
         Request request = new Request(floor, direction);
-        for (Elevator elevator : elevators) {
-            int currentScore = elevator.score(request);
-            if (currentScore > bestScore) {
-                bestElevator = elevator;
-                bestScore = currentScore;
-            }
-        }
 
+        Elevator bestElevator = scheduler.bestElevator(elevators, request);
         bestElevator.addDestination(request);
         return bestElevator.getId();
     }
