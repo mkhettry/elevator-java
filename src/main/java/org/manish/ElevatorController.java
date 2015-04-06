@@ -1,15 +1,16 @@
 package org.manish;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ElevatorController {
-    private final int numStories;
+    private final int numFloors;
 
     private List<Elevator> elevators = new ArrayList<Elevator>();
 
-    public ElevatorController(int numElevators, int numFloors) {
-        this.numStories = numFloors;
+    public ElevatorController(int numFloors, int numElevators) {
+        this.numFloors = numFloors;
         elevators = new ArrayList<Elevator>(numElevators);
         for (int i = 0; i < numElevators; i++) {
             elevators.add(new Elevator(i, numFloors));
@@ -24,6 +25,17 @@ public class ElevatorController {
 
     public void update() {
         // ??
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Iterator<Elevator> iterator = elevators.iterator(); iterator.hasNext(); ) {
+            Elevator e = iterator.next();
+            sb.append(e.toString());
+            sb.append(" ");
+        }
+        return sb.toString();
     }
 
     /**
@@ -54,4 +66,7 @@ public class ElevatorController {
         elevators.get(id).update(floor, newGoal);
     }
 
+    public int getNumFloors() {
+        return numFloors;
+    }
 }

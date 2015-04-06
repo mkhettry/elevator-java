@@ -13,7 +13,7 @@ public class ElevatorControllerTest {
 
     @Before
     public void setUp() {
-        elevatorController = new ElevatorController(2, 20);
+        elevatorController = new ElevatorController(20, 2);
     }
 
     @Test

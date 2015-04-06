@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-// Request. PickupRequest
-//          DropOffRequest.
 public class Elevator {
     private final int numFloors;
     private int id;
@@ -114,5 +112,23 @@ public class Elevator {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder gs = new StringBuilder();
+
+        // Apache string utils has functions to do string.join
+        gs.append("[");
+        for (Iterator<Integer> iterator = goals.iterator(); iterator.hasNext(); ) {
+            Integer goal = iterator.next();
+            gs.append(goal);
+            if (iterator.hasNext()) {
+                gs.append(",");
+            }
+        }
+        gs.append("]");
+
+        return "[" + id + ":" + currentFloor + "," + gs + "]";
     }
 }
