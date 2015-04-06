@@ -7,7 +7,9 @@ import java.util.List;
 
 public class Elevator {
     private final int numFloors;
-    private int id;
+    private final int id;
+
+    // mutable state.
     private int currentFloor;
     private List<Integer> goals = new ArrayList<Integer>();
     private Direction direction;
@@ -19,7 +21,11 @@ public class Elevator {
 
     }
 
-    void step() {
+    /**
+     * Take one step. For a elevator in motion, this could mean either going up or down one floor. Picking up
+     * a request as well as changing direction.
+     */
+    public void step() {
         if (direction == Direction.Up && !topFloor()) {
             currentFloor++;
         } else if (direction == Direction.Down && !groundFloor()) {
@@ -37,12 +43,22 @@ public class Elevator {
         updateDirection();
     }
 
+    /**
+     * Add a new pickup request.
+     * @param request
+     */
     void addDestination(Request request) {
         goals.add(request.getPickupFloor());
         updateDirection();
     }
 
-    // http://www.quora.com/Is-there-any-public-elevator-scheduling-algorithm-standard
+    /**
+     * Implement a score for the nearest car strategy.
+     * TODO: I think this belongs in the strategy.
+     * @param request
+     * @return a numeric score. The higher the score, the more desirable it is to use this elevator.
+     * @see <a href="http://www.quora.com/Is-there-any-public-elevator-scheduling-algorithm-standard">Public elevator scheduling notes</a>
+     */
     int score(Request request) {
         if (direction == null
                 || sameDirection(request.getPickupFloor()) && direction == request.getDesiredDirection()) {
@@ -79,6 +95,14 @@ public class Elevator {
         return currentFloor == 0;
     }
 
+    /*
+     * Private method but needs some documentation!
+     * If the elevator has reached one of its goals, remove the goal.
+     * Changes directions if its needed; i.e. all its goals in the current direction have been fulfilled.
+     * If there are no goals, just wait on the current floor; i.e set direction to null.
+     * Implementation notes: Keep an unordered list of goals. Assumption is that there are very few goals
+     * at any given time and the code complexity of sorting is not worth it.
+     */
     private void updateDirection() {
         if (goals.isEmpty()) {
             direction = null;

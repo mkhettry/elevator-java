@@ -27,7 +27,8 @@ public class ElevatorController {
     }
 
     public void update() {
-        // ??
+        // I really wasn't sure why you need update in the controller. The controller should pick the
+        // best elevator and let each elevator updates its state based on where its going.
     }
 
     @Override
